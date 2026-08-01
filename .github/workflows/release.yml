@@ -18,6 +18,8 @@ jobs:
       - uses: actions/setup-python@v7.0.0
         with:
           python-version: "3.14"
+      - name: Install test dependency
+        run: python -m pip install cryptography
       - name: Verify tag and manifest versions
         shell: pwsh
         run: |
