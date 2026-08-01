@@ -29,7 +29,7 @@ The router API is undocumented and may change in future firmware releases.
 - Dynamic client device trackers with connection details
 - Redacted diagnostics based on a strict allowlist
 
-Client trackers are disabled by default to avoid creating a large number of entities. Enable only the trackers you want from **Settings → Devices & services → Entities**.
+All entities, including client trackers, are enabled by default. When upgrading from 0.1.2 or earlier, entities previously disabled by the integration are enabled automatically; entities disabled manually by the user remain disabled.
 
 The integration is intentionally read-only. It does not expose switches, reboot controls, client blocking, or configuration changes.
 
