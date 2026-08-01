@@ -67,7 +67,8 @@ class DeviceTrackerTests(unittest.IsolatedAsyncioTestCase):
             node
             for node in self.tree.body
             if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef))
-            and node.name in {"_mac", "async_setup_entry"}
+            and node.name
+            in {"_mac", "_client_node", "_existing_node_sn", "async_setup_entry"}
         ]
         module = ast.Module(
             body=[ast.parse("from __future__ import annotations").body[0], *functions],
@@ -76,17 +77,36 @@ class DeviceTrackerTests(unittest.IsolatedAsyncioTestCase):
         added = []
 
         class Tracker:
-            def __init__(self, coordinator, client) -> None:
+            def __init__(self, coordinator, client, node_sn) -> None:
                 self.key = client["mac"]
 
-        namespace = {"callback": lambda function: function, "TendaClientTracker": Tracker}
+        registry = SimpleNamespace(
+            async_get_entity_id=lambda *args: None,
+            async_get=lambda entity_id: None,
+        )
+        device_registry = SimpleNamespace(async_get=lambda device_id: None)
+        namespace = {
+            "callback": lambda function: function,
+            "TendaClientTracker": Tracker,
+            "DOMAIN": "tenda_be3600",
+            "er": SimpleNamespace(async_get=lambda hass: registry),
+            "dr": SimpleNamespace(async_get=lambda hass: device_registry),
+            "node_by_sn": lambda snapshot, sn: next(
+                (node for node in snapshot.get("nodes", []) if node.get("sn") == sn),
+                None,
+            ),
+        }
         exec(compile(module, str(self.path), "exec"), namespace)
 
-        coordinator = SimpleNamespace(data={"clients": [{"mac": "client-key"}]})
+        coordinator = SimpleNamespace(
+            data={"nodes": [], "clients": [{"mac": "client-key"}]}
+        )
         coordinator.async_add_listener = lambda listener: setattr(
             coordinator, "listener", listener
         )
-        entry = SimpleNamespace(runtime_data=coordinator, async_on_unload=lambda _: None)
+        entry = SimpleNamespace(
+            entry_id="current", runtime_data=coordinator, async_on_unload=lambda _: None
+        )
         await namespace["async_setup_entry"](None, entry, added.extend)
         coordinator.listener()
 

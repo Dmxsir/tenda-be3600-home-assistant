@@ -26,10 +26,12 @@ The router API is undocumented and may change in future firmware releases.
 - System uptime
 - Mesh node count and total connected client count
 - Per-node online state, connected clients, connection duration, and wired-backhaul state
-- Dynamic client device trackers with connection details
+- Dynamic client device trackers associated with their serving Tenda mesh-node device
 - Redacted diagnostics based on a strict allowlist
 
 All entities, including client trackers, are enabled by default. When upgrading from 0.1.2 or earlier, entities previously disabled by the integration are enabled automatically; entities disabled manually by the user remain disabled.
+
+Each tracker exposes a friendly `mesh_node` attribute. To avoid frequent Device Registry writes, roaming updates this attribute immediately but moves the tracker's device-page association only after the integration is reloaded or Home Assistant restarts.
 
 The integration is intentionally read-only. It does not expose switches, reboot controls, client blocking, or configuration changes.
 
@@ -66,6 +68,7 @@ No telemetry is sent by this integration. Home Assistant may still retain entity
 - No CPU, memory, temperature, Ethernet port speed, or duplex telemetry is exposed by the known API modules.
 - Client RSSI values reported as `0` are treated as unavailable.
 - New mesh nodes may require an integration reload before their entities appear.
+- A roaming client remains listed under the node selected at the last integration setup until the integration is reloaded; its `mesh_node` attribute remains current.
 - Only the model and firmware listed above have been verified.
 
 ## Troubleshooting

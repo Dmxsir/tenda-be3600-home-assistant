@@ -43,6 +43,16 @@ def _enable_integration_disabled_entities(
         )
 
 
+def _cleanup_foreign_devices(hass: HomeAssistant, entry: TendaConfigEntry) -> None:
+    """Remove this config entry from devices owned by another integration."""
+    device_registry = dr.async_get(hass)
+    for device in dr.async_entries_for_config_entry(device_registry, entry.entry_id):
+        if not any(identifier[0] == DOMAIN for identifier in device.identifiers):
+            device_registry.async_update_device(
+                device.id, remove_config_entry_id=entry.entry_id
+            )
+
+
 async def async_setup_entry(hass: HomeAssistant, entry: TendaConfigEntry) -> bool:
     """Set up Tenda BE3600 from a config entry."""
     session = aiohttp.ClientSession(
@@ -64,13 +74,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: TendaConfigEntry) -> boo
     entry.runtime_data = coordinator
     _enable_integration_disabled_entities(hass, entry)
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
-
-    device_registry = dr.async_get(hass)
-    for device in dr.async_entries_for_config_entry(device_registry, entry.entry_id):
-        if not any(identifier[0] == DOMAIN for identifier in device.identifiers):
-            device_registry.async_update_device(
-                device.id, remove_config_entry_id=entry.entry_id
-            )
+    _cleanup_foreign_devices(hass, entry)
     return True
 
 

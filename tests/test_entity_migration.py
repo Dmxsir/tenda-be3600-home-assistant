@@ -49,6 +49,19 @@ class EntityMigrationTests(unittest.TestCase):
         cls.namespace = {}
         exec(compile(module, str(cls.path), "exec"), cls.namespace)
 
+        cleanup = next(
+            node
+            for node in tree.body
+            if isinstance(node, ast.FunctionDef)
+            and node.name == "_cleanup_foreign_devices"
+        )
+        cleanup_module = ast.Module(
+            body=[ast.parse("from __future__ import annotations").body[0], cleanup],
+            type_ignores=[],
+        )
+        cls.cleanup_namespace = {}
+        exec(compile(cleanup_module, str(cls.path), "exec"), cls.cleanup_namespace)
+
     def entry(
         self,
         entity_id: str,
@@ -127,6 +140,43 @@ class EntityMigrationTests(unittest.TestCase):
         entity = self.entry("sensor.once")
         registry = self.migrate([entity], times=2)
         self.assertEqual(registry.updates, ["sensor.once"])
+
+    def test_foreign_device_cleanup_remains_scoped_and_idempotent(self) -> None:
+        tenda = SimpleNamespace(
+            id="tenda-device",
+            identifiers={("tenda_be3600", "synthetic-node")},
+            config_entries={"current"},
+        )
+        foreign = SimpleNamespace(
+            id="foreign-device",
+            identifiers={("other_integration", "synthetic-camera")},
+            config_entries={"current", "foreign-entry"},
+        )
+        devices = [tenda, foreign]
+        updates = []
+
+        def update(device_id, *, remove_config_entry_id):
+            updates.append((device_id, remove_config_entry_id))
+            next(device for device in devices if device.id == device_id).config_entries.remove(
+                remove_config_entry_id
+            )
+
+        registry = SimpleNamespace(async_update_device=update)
+        device_registry = SimpleNamespace(
+            async_get=lambda hass: registry,
+            async_entries_for_config_entry=lambda registry, entry_id: [
+                device for device in devices if entry_id in device.config_entries
+            ],
+        )
+        function = self.cleanup_namespace["_cleanup_foreign_devices"]
+        function.__globals__.update(dr=device_registry, DOMAIN="tenda_be3600")
+        entry = SimpleNamespace(entry_id="current")
+        function(None, entry)
+        function(None, entry)
+
+        self.assertEqual(updates, [("foreign-device", "current")])
+        self.assertEqual(tenda.config_entries, {"current"})
+        self.assertEqual(foreign.config_entries, {"foreign-entry"})
 
 
 if __name__ == "__main__":

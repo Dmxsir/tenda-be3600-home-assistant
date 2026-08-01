@@ -4,6 +4,13 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+## [0.1.4] - 2026-08-01
+
+### Fixed
+
+- Associate client trackers with the existing Tenda mesh-node device serving each client at setup.
+- Expose a privacy-safe `mesh_node` attribute that follows roaming without frequent Device Registry writes.
+
 ## [0.1.3] - 2026-08-01
 
 ### Changed
@@ -30,6 +37,7 @@ All notable changes to this project are documented here.
 - Keep session tokens and cookies in memory only.
 - Limit diagnostics to an explicit non-identifying allowlist.
 
-[Unreleased]: https://github.com/Dmxsir/tenda-be3600-home-assistant/compare/v0.1.3...HEAD
+[Unreleased]: https://github.com/Dmxsir/tenda-be3600-home-assistant/compare/v0.1.4...HEAD
+[0.1.4]: https://github.com/Dmxsir/tenda-be3600-home-assistant/compare/v0.1.3...v0.1.4
 [0.1.3]: https://github.com/Dmxsir/tenda-be3600-home-assistant/compare/v0.1.2...v0.1.3
 [0.1.2]: https://github.com/Dmxsir/tenda-be3600-home-assistant/releases/tag/v0.1.2
