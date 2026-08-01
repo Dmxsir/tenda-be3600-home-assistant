@@ -4,6 +4,13 @@ All notable changes to this project are documented here.
 
 ## [Unreleased]
 
+## [0.1.3] - 2026-08-01
+
+### Changed
+
+- Enable new client device trackers by default.
+- Safely enable existing Tenda entities disabled by the integration while preserving entities disabled by the user.
+
 ## [0.1.2] - 2026-08-01
 
 ### Added
@@ -23,5 +30,6 @@ All notable changes to this project are documented here.
 - Keep session tokens and cookies in memory only.
 - Limit diagnostics to an explicit non-identifying allowlist.
 
-[Unreleased]: https://github.com/Dmxsir/tenda-be3600-home-assistant/compare/v0.1.2...HEAD
+[Unreleased]: https://github.com/Dmxsir/tenda-be3600-home-assistant/compare/v0.1.3...HEAD
+[0.1.3]: https://github.com/Dmxsir/tenda-be3600-home-assistant/compare/v0.1.2...v0.1.3
 [0.1.2]: https://github.com/Dmxsir/tenda-be3600-home-assistant/releases/tag/v0.1.2

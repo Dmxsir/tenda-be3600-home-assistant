@@ -50,7 +50,6 @@ async def async_setup_entry(
 class TendaClientTracker(CoordinatorEntity[TendaCoordinator], BaseScannerEntity):
     """A client observed by the mesh."""
 
-    _attr_entity_registry_enabled_default = False
     _attr_source_type = SourceType.ROUTER
 
     def __init__(self, coordinator: TendaCoordinator, client: dict[str, Any]) -> None:
