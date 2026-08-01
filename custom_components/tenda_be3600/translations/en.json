@@ -1,0 +1,76 @@
+{
+  "config": {
+    "abort": {
+      "already_configured": "This mesh is already configured",
+      "reauth_successful": "Reauthentication was successful"
+    },
+    "error": {
+      "cannot_connect": "Failed to connect",
+      "invalid_auth": "Invalid administrator password",
+      "locked": "Administrator login is temporarily locked; wait before trying again",
+      "invalid_host": "Invalid host or IP address",
+      "unknown": "Unexpected error",
+      "unsupported_device": "The router returned an unsupported response",
+      "wrong_router": "The credentials belong to a different mesh"
+    },
+    "step": {
+      "reauth_confirm": {
+        "data": {
+          "password": "Administrator password"
+        },
+        "description": "Enter the current administrator password for this Tenda mesh.",
+        "title": "Reauthenticate Tenda BE3600"
+      },
+      "user": {
+        "data": {
+          "host": "Host or IP address",
+          "password": "Administrator password"
+        },
+        "description": "Connect directly to the Tenda mesh on your local network.",
+        "title": "Add Tenda BE3600 Mesh"
+      }
+    }
+  },
+  "entity": {
+    "binary_sensor": {
+      "internet": {
+        "name": "Internet"
+      },
+      "node_online": {
+        "name": "Online"
+      },
+      "wan_connected": {
+        "name": "WAN connection"
+      },
+      "wired_backhaul": {
+        "name": "Ethernet backhaul"
+      }
+    },
+    "sensor": {
+      "connected_clients": {
+        "name": "Connected clients"
+      },
+      "connection_duration": {
+        "name": "Connection duration"
+      },
+      "mesh_nodes": {
+        "name": "Mesh nodes"
+      },
+      "system_uptime": {
+        "name": "Uptime"
+      },
+      "total_connected_clients": {
+        "name": "Total connected clients"
+      },
+      "wan_connection_duration": {
+        "name": "WAN connection duration"
+      },
+      "wan_download": {
+        "name": "WAN download"
+      },
+      "wan_upload": {
+        "name": "WAN upload"
+      }
+    }
+  }
+}

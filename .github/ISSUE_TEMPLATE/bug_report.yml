@@ -1,0 +1,58 @@
+name: Bug report
+description: Report a reproducible integration problem using sanitized information.
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: Do not attach raw HAR, CFG, log, or diagnostics files. Remove credentials, tokens, cookies, network identifiers, and client names.
+  - type: input
+    id: integration_version
+    attributes:
+      label: Integration version
+      placeholder: 0.1.2
+    validations:
+      required: true
+  - type: input
+    id: home_assistant_version
+    attributes:
+      label: Home Assistant version
+      placeholder: 2026.7.4
+    validations:
+      required: true
+  - type: input
+    id: device_firmware
+    attributes:
+      label: Router model and firmware
+      placeholder: Tenda ME3 Pro BE3600, V16.03.60.62_multi
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Problem description
+      description: What happened, and what did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction steps
+      placeholder: "1. ...\n2. ...\n3. ..."
+    validations:
+      required: true
+  - type: textarea
+    id: sanitized_error
+    attributes:
+      label: Sanitized error text
+      description: Paste only the smallest relevant excerpt after redacting all sensitive fields.
+      render: text
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Privacy confirmation
+      options:
+        - label: I removed passwords, digests, cookies, tokens, IP/MAC/SN values, client names, and hostnames.
+          required: true
+        - label: I did not attach raw HAR, CFG, log, or diagnostics files.
+          required: true

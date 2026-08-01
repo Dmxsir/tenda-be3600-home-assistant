@@ -1,0 +1,51 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7.0.1
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v7.0.0
+        with:
+          python-version: "3.14"
+      - name: Verify tag and manifest versions
+        shell: pwsh
+        run: |
+          $manifest = Get-Content -Raw custom_components/tenda_be3600/manifest.json | ConvertFrom-Json
+          $tagVersion = "${{ github.ref_name }}".TrimStart("v")
+          if ($manifest.version -ne $tagVersion) {
+            throw "Tag version $tagVersion does not match manifest version $($manifest.version)"
+          }
+      - name: Test and validate
+        run: |
+          python -m unittest discover -s tests -p "test_*.py" -v
+          python -m compileall -q custom_components tests
+          python scripts/validate_repository.py
+      - name: Build and verify assets
+        shell: pwsh
+        run: |
+          ./scripts/build_release.ps1
+          ./scripts/verify_release.ps1
+      - name: Publish GitHub release
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $tag = "${{ github.ref_name }}"
+          $assets = @(Get-ChildItem release/tenda_be3600-*.zip, release/tenda_be3600-*.sha256 | ForEach-Object FullName)
+          gh release view $tag *> $null
+          if ($LASTEXITCODE -eq 0) {
+            gh release upload $tag @assets --clobber
+          } else {
+            gh release create $tag @assets --verify-tag --title "Tenda BE3600 Mesh $tag" --generate-notes
+          }

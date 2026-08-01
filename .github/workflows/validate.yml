@@ -1,0 +1,44 @@
+name: Validate
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: "17 3 * * 5"
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: actions/setup-python@v7.0.0
+        with:
+          python-version: "3.14"
+      - name: Unit tests
+        run: python -m unittest discover -s tests -p "test_*.py" -v
+      - name: Compile Python
+        run: python -m compileall -q custom_components tests
+      - name: Validate tracked files
+        run: python scripts/validate_repository.py
+      - name: Build release package
+        shell: pwsh
+        run: ./scripts/build_release.ps1
+      - name: Verify release package
+        shell: pwsh
+        run: ./scripts/verify_release.ps1
+
+  hacs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - name: HACS validation
+        uses: hacs/action@main
+        with:
+          category: integration

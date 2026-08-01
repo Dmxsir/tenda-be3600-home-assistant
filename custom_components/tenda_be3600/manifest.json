@@ -1,0 +1,12 @@
+{
+  "codeowners": ["@Dmxsir"],
+  "config_flow": true,
+  "domain": "tenda_be3600",
+  "integration_type": "hub",
+  "iot_class": "local_polling",
+  "name": "Tenda BE3600 Mesh",
+  "documentation": "https://github.com/Dmxsir/tenda-be3600-home-assistant",
+  "issue_tracker": "https://github.com/Dmxsir/tenda-be3600-home-assistant/issues",
+  "requirements": [],
+  "version": "0.1.2"
+}

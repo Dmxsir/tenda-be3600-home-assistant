@@ -1,0 +1,76 @@
+{
+  "config": {
+    "abort": {
+      "already_configured": "מערכת Mesh זו כבר מוגדרת",
+      "reauth_successful": "האימות מחדש הצליח"
+    },
+    "error": {
+      "cannot_connect": "החיבור לנתב נכשל",
+      "invalid_auth": "סיסמת מנהל המערכת שגויה",
+      "locked": "הכניסה לממשק הניהול נעולה זמנית; יש להמתין לפני ניסיון נוסף",
+      "invalid_host": "שם המארח או כתובת ה־IP אינם תקינים",
+      "unknown": "אירעה שגיאה בלתי צפויה",
+      "unsupported_device": "הנתב החזיר תשובה שאינה נתמכת",
+      "wrong_router": "פרטי הכניסה שייכים למערכת Mesh אחרת"
+    },
+    "step": {
+      "reauth_confirm": {
+        "data": {
+          "password": "סיסמת מנהל המערכת"
+        },
+        "description": "יש להזין את סיסמת מנהל המערכת הנוכחית של מערכת Tenda זו.",
+        "title": "אימות מחדש של Tenda BE3600"
+      },
+      "user": {
+        "data": {
+          "host": "שם מארח או כתובת IP",
+          "password": "סיסמת מנהל המערכת"
+        },
+        "description": "חיבור ישיר למערכת Tenda ברשת המקומית.",
+        "title": "הוספת Tenda BE3600 Mesh"
+      }
+    }
+  },
+  "entity": {
+    "binary_sensor": {
+      "internet": {
+        "name": "אינטרנט"
+      },
+      "node_online": {
+        "name": "מקוון"
+      },
+      "wan_connected": {
+        "name": "חיבור WAN"
+      },
+      "wired_backhaul": {
+        "name": "תמסורת Ethernet"
+      }
+    },
+    "sensor": {
+      "connected_clients": {
+        "name": "לקוחות מחוברים"
+      },
+      "connection_duration": {
+        "name": "משך החיבור"
+      },
+      "mesh_nodes": {
+        "name": "יחידות Mesh"
+      },
+      "system_uptime": {
+        "name": "זמן פעילות"
+      },
+      "total_connected_clients": {
+        "name": "סך כל הלקוחות המחוברים"
+      },
+      "wan_connection_duration": {
+        "name": "משך חיבור WAN"
+      },
+      "wan_download": {
+        "name": "הורדה דרך WAN"
+      },
+      "wan_upload": {
+        "name": "העלאה דרך WAN"
+      }
+    }
+  }
+}

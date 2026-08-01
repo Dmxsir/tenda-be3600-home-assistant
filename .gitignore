@@ -1,0 +1,32 @@
+# Local project reference material and captures
+/AGENTS.md
+/sources/
+*.har
+*.cfg
+*.log
+*.log.*
+
+# Release output
+/release/
+*.zip
+*.sha256
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+.venv/
+venv/
+
+# Home Assistant local state
+/.storage/
+/.HA_VERSION
+/configuration.yaml
+/secrets.yaml
+
+# Editors and operating systems
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
